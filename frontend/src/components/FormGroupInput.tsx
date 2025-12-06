@@ -3,34 +3,37 @@ import type { Ref } from "react";
 type inputType = "text" | "number" | "date";
 
 interface Props {
-  id: string;
+  key?: string;
+  id?: string;
   labelText: string;
   type?: inputType;
-  inputClasses?: string[];
   ref?: Ref<HTMLInputElement>;
   placeholder?: string;
+  defaultValue?: string;
   required?: boolean;
 }
 
 const FormGroupInput = ({
+  key,
   id,
   labelText,
   ref = null,
   type = "text",
-  inputClasses = [],
   placeholder = "",
-  required = true,
+  required = false,
+  defaultValue,
 }: Props) => {
   return (
     <div className="form-group">
-      <label htmlFor={id}>{labelText}</label>
+      <label>{labelText}</label>
       <input
-        ref={ref}
-        className={inputClasses.join(" ")}
-        type={type}
+        key={key}
         id={id}
+        ref={ref}
+        type={type}
         placeholder={placeholder}
         required={required}
+        defaultValue={defaultValue}
       />
     </div>
   );
