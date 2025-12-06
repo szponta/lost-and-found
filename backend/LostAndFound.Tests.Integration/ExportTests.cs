@@ -72,4 +72,34 @@ public class ExportTests : IClassFixture<WebApplicationFactory<Program>>
         exportItem.Details[1].Key.Should().Be("test_other_key");
         exportItem.Details[1].Value.Should().Be("test_other_value");
     }
+
+    // [Fact]
+    // public async Task GetXmlExportTest()
+    // {
+    //     // Arrange
+    //     new DbBuilder(_context)
+    //         .AddItem()
+    //         .WithName("Test item")
+    //         .WithDescription("Test description")
+    //         .AddDetail().WithKey("test_key").WithValue("test_value")
+    //         .AddDetail().WithKey("test_other_key").WithValue("test_other_value")
+    //         .Build();
+    //
+    //     // Act
+    //     var stream = await _client.GetStreamAsync("/api/v1/export/xml");
+    //
+    //     // Assert
+    //     var serializer = new XmlSerializer(typeof(List<Item>));
+    //     var export = (List<Item>)serializer.Deserialize(stream)!;
+    //     export.Should().NotBeNull();
+    //     export.Should().HaveCount(1);
+    //     var exportItem = export[0];
+    //     exportItem.Name.Should().Be("Test item");
+    //     exportItem.Description.Should().Be("Test description");
+    //     exportItem.Details.Should().HaveCount(2);
+    //     exportItem.Details[0].Key.Should().Be("test_key");
+    //     exportItem.Details[0].Value.Should().Be("test_value");
+    //     exportItem.Details[1].Key.Should().Be("test_other_key");
+    //     exportItem.Details[1].Value.Should().Be("test_other_value");
+    // }
 }

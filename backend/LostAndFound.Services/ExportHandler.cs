@@ -13,6 +13,13 @@ public interface IExportHandler
 
 public class ExportHandler(LostAndFoundDbContext context) : IExportHandler
 {
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        ReferenceHandler = ReferenceHandler.IgnoreCycles
+    };
+
     public async Task<IResult> GetStream(ExportType type)
     {
         var items = await context.Items
@@ -64,12 +71,7 @@ public class ExportHandler(LostAndFoundDbContext context) : IExportHandler
     {
         var stream = new MemoryStream();
         var writer = new StreamWriter(stream);
-        var json = JsonSerializer.Serialize(items, new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            ReferenceHandler = ReferenceHandler.IgnoreCycles
-        });
+        var json = JsonSerializer.Serialize(items, Options);
         await writer.WriteAsync(json);
         await writer.FlushAsync();
         stream.Position = 0;
