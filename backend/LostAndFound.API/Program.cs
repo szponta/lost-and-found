@@ -65,6 +65,10 @@ app.MapPost("/api/v1/items/{itemId:int}/details",
     (IPostItemHandler handler, [FromRoute] int itemId, [FromBody] IList<CreateItemDetailsRequest> request) =>
         handler.CreateItemDetailsAsync(itemId, request));
 
+app.MapGet("/api/v1/export/json", (IExportHandler handler) => handler.GetStream(ExportType.Json));
+app.MapGet("/api/v1/export/xml", (IExportHandler handler) => handler.GetStream(ExportType.Xml));
+app.MapGet("/api/v1/export/csv", (IExportHandler handler) => handler.GetStream(ExportType.Csv));
+
 Log.Information("Application running.");
 
 app.Run();
