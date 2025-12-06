@@ -46,7 +46,10 @@ app.UseHttpsRedirection();
 app.MapGet("/api/v1/test", () => new { message = "hello world" }).WithName("Test");
 
 app.MapGet("/api/v1/items",
-    (IGetItemsHandler handler, [FromQuery] int take = 10, int skip = 0) => handler.HandleAsync(take, skip));
+    (IGetItemsHandler handler, [FromQuery] int take = 10, int skip = 0,
+            string search = "",
+            DateTime? foundDateFrom = null) =>
+        handler.HandleAsync(take, skip, search, foundDateFrom));
 
 Log.Information("Application running.");
 

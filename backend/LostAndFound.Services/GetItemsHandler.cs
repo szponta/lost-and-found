@@ -5,7 +5,10 @@ namespace LostAndFound.Services;
 
 public interface IGetItemsHandler
 {
-    public Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "");
+    public Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0,
+        string search = "",
+        DateTime? foundDateFrom = null
+    );
 }
 
 public class GetItemsHandler(IItemsRepository repository) : IGetItemsHandler
@@ -17,9 +20,11 @@ public class GetItemsHandler(IItemsRepository repository) : IGetItemsHandler
             cfg.CreateMap<PagedResults<Item>, ItemsResponse>();
         }).CreateMapper();
 
-    public async Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "")
+    public async Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "",
+        DateTime? foundDateFrom = null
+    )
     {
-        var itemsResult = await repository.GetPagedEntities(take, skip, search);
+        var itemsResult = await repository.GetPagedEntities(take, skip, search, foundDateFrom);
         return _mapper.Map<ItemsResponse>(itemsResult);
     }
 }

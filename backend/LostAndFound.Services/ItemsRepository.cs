@@ -3,13 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LostAndFound.Services;
 
-public interface IItemsRepository : IRepository<Item>;
+public interface IItemsRepository : IRepository<Item>
+{
+    Task<PagedResults<Item>> GetPagedEntities(int take, int skip, string search = "", DateTime? foundDateFrom = null);
+}
 
 public partial class ItemsRepository(LostAndFoundDbContext context) : Repository<Item>(context), IItemsRepository
 {
     private readonly LostAndFoundDbContext _context = context;
 
-    public async Task<PagedResults<Item>> GetPagedEntities(int take, int skip, string search = "")
+    public async Task<PagedResults<Item>> GetPagedEntities(int take, int skip, string search = "",
+        DateTime? foundDateFrom = null
+    )
     {
         var dbSet = _context.Set<Item>()
             .Select(item => new SearchItem
@@ -61,6 +66,11 @@ public partial class ItemsRepository(LostAndFoundDbContext context) : Repository
             }).OrderByDescending(x => x.Value);
         }
 
+        if (foundDateFrom != null)
+        {
+            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
+        }
+
         var totalEntities = dbSet.Count();
         var items = await dbSet.Select(x => x.Item)
             .Skip(skip)
@@ -91,7 +101,6 @@ public partial class ItemsRepository(LostAndFoundDbContext context) : Repository
 
 public interface IRepository<T> where T : class
 {
-    Task<PagedResults<T>> GetPagedEntities(int take, int skip, string search = "");
 }
 
 public class Repository<T>(LostAndFoundDbContext context) where T : class

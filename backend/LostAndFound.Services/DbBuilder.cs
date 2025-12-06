@@ -76,7 +76,7 @@ public class DbBuilder(LostAndFoundDbContext context)
             return this;
         }
 
-        public DbItemBuilder WithFoundDate(DateTime foundDate)
+        public DbItemBuilder WithFoundDate(DateTime? foundDate)
         {
             var item = _context.Set<Item>().Local.Last();
             item.FoundDate = foundDate;
