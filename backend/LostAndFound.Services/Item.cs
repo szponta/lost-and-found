@@ -7,10 +7,10 @@ public class Item
     public string Description { get; set; } = "";
     public ItemStatus Status { get; set; }
 
-    public DateTime? LostDateFrom { get; set; }
-    public DateTime? LostDateTo { get; set; }
+    public DateTimeOffset? LostDateFrom { get; set; }
+    public DateTimeOffset? LostDateTo { get; set; }
 
-    public DateTime? FoundDate { get; set; }
+    public DateTimeOffset? FoundDate { get; set; }
 
     public string? EventLocation { get; set; }
     public string? StorageLocation { get; set; }
