@@ -2,19 +2,24 @@ import type { FormData, SearchResults, SearchResultItem } from "../types/form.ty
 
 const FILE_NAME: string = "search.services.ts";
 
+const modifyDate = (date: Date): string => {
+  console.log(date.toISOString().split("T")[0]);
+  return date.toISOString().split("T")[0];
+};
+
 export const submitSearchRequest = async (
   searchFormData: FormData,
   take: number,
   skip: number
 ): Promise<SearchResultItem[]> => {
   const params = new URLSearchParams({
-    search: searchFormData.name,
-    country: searchFormData.country,
-    location: searchFormData.location,
-    foundDateFrom: searchFormData.fromDate.toISOString(),
-    foundDateTo: searchFormData.toDate.toISOString(),
     take: take.toString(),
     skip: ((take / 2) * skip - 1).toString(),
+    search: searchFormData.name,
+    foundDateFrom: modifyDate(searchFormData.fromDate),
+    foundDateTo: modifyDate(searchFormData.toDate),
+    country: searchFormData.country,
+    city: searchFormData.location,
   });
 
   const URL: string = `/api/v1/items/?${params.toString()}`;
