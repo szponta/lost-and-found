@@ -1,23 +1,18 @@
-import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import "src/styles/App.css";
+// Routes
+import Home from "./routes/Home";
+import SearchResultPage from "./routes/SearchResultPage";
+import AddLostPage from "./routes/AddLostPage";
 
 const App = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/v1/test");
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/search-result" element={<SearchResultPage />} />
+      <Route path="/add-lost" element={<AddLostPage />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
   );
 };
 
