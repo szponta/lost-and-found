@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- make the JSON an embedded resource with logical name 'data.plock' -->
+        <EmbeddedResource Include="plock-data.json">
+            <LogicalName>data.plock</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>
