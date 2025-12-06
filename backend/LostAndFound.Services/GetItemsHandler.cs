@@ -10,7 +10,9 @@ public interface IGetItemsHandler
     public Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0,
         string search = "",
         DateTime? foundDateFrom = null,
-        DateTime? foundDateTo = null
+        DateTime? foundDateTo = null,
+        string country = "",
+        string location = ""
     );
 }
 
@@ -25,19 +27,28 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
 
     public async Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "",
         DateTime? foundDateFrom = null,
-        DateTime? foundDateTo = null
+        DateTime? foundDateTo = null,
+        string country = "",
+        string location = ""
     )
     {
         var dbSet = context.Set<Item>()
             .Select(item => new SearchItem
             {
                 Item = item, Search = $"{item.Name} {item.Description}".ToLowerInvariant(),
-
+                Country = item.Country.ToLowerInvariant(),
+                Location = item.EventLocation != null ? item.EventLocation.ToLowerInvariant() : "",
                 DetailSearch = context.Set<ItemDetail>()
                     .Where(d => d.ItemId == item.Id)
                     .Select(d => d.Value.ToLowerInvariant())
                     .ToList()
             });
+
+        if (!string.IsNullOrWhiteSpace(country))
+        {
+            country = country.ToLowerInvariant();
+            dbSet = dbSet.Where(x => x.Country == country);
+        }
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -88,6 +99,12 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
             dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
         }
 
+        if (!string.IsNullOrWhiteSpace(location))
+        {
+            location = location.ToLowerInvariant();
+            dbSet = dbSet.Where(x => x.Location.Contains(location));
+        }
+
         var totalEntities = dbSet.Count();
         var items = await dbSet.Select(x => x.Item)
             .Skip(skip)
@@ -115,6 +132,8 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
         public string Search { get; set; } = null!;
         public IList<string> DetailSearch { get; set; } = [];
         public int Value { get; set; }
+        public string Country { get; set; } = "";
+        public string Location { get; set; } = "";
     }
 }
 

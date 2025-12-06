@@ -96,6 +96,13 @@ public class DbBuilder(LostAndFoundDbContext context)
             item.StorageLocation = storageLocation;
             return this;
         }
+
+        public DbItemBuilder WithCountry(string country)
+        {
+            var item = _context.Set<Item>().Local.Last();
+            item.Country = country;
+            return this;
+        }
     }
 
     public class DbItemDetailBuilder(DbBuilder builder) : DbItemBuilder(builder)
