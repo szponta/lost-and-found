@@ -53,6 +53,9 @@ app.MapGet("/api/v1/items",
         ) =>
         handler.HandleAsync(take, skip, search, foundDateFrom, foundDateTo));
 
+app.MapGet("/api/v1/items/{id:int}",
+    (IGetSingleItemHandler handler, int id) => handler.HandleAsync(id));
+
 Log.Information("Application running.");
 
 app.Run();

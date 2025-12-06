@@ -98,7 +98,7 @@ public class DbBuilder(LostAndFoundDbContext context)
         }
     }
 
-    public class DbItemDetailBuilder(DbBuilder builder) : DbBuilder(builder._context)
+    public class DbItemDetailBuilder(DbBuilder builder) : DbItemBuilder(builder)
     {
         public DbItemDetailBuilder WithKey(string key)
         {
