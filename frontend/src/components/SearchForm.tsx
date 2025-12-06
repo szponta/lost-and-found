@@ -22,15 +22,24 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
 
   useEffect(() => {
     if (!lastQuery) return;
-
     const repeatRequest = async () => {
       const items = (await submitSearchRequest(lastQuery, itemsPerPage * 2, currentPage)) as SearchResultItem[];
-
       setIsNextPageAvailable(items.length - itemsPerPage > 0);
       setSearchResult(items.slice(0, itemsPerPage));
     };
     repeatRequest();
   }, [currentPage]);
+
+  useEffect(() => {
+    if (!lastQuery) return;
+    const repeatRequest = async () => {
+      const items = (await submitSearchRequest(lastQuery, itemsPerPage * 2, currentPage)) as SearchResultItem[];
+      setIsNextPageAvailable(items.length - itemsPerPage > 0);
+      setSearchResult(items.slice(0, itemsPerPage));
+    };
+    repeatRequest();
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   const validateFormData = (): boolean => {
     let isValid = true;

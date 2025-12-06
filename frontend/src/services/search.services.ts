@@ -7,18 +7,12 @@ export const submitSearchRequest = async (
   take: number,
   skip: number
 ): Promise<SearchResultItem[]> => {
-  // console.group();
-  // for (const key in searchFormData) {
-  //   console.log(key.toString(), searchFormData[key as keyof FormData]);
-  // }
-  // console.groupEnd();
-
   const params = new URLSearchParams({
     search: searchFormData.name,
-    // country: searchFormData.country,
-    // location: searchFormData.location,
-    // foundDateFrom: searchFormData.fromDate.toISOString(),
-    // foundDateTo: searchFormData.toDate.toISOString(),
+    country: searchFormData.country,
+    location: searchFormData.location,
+    foundDateFrom: searchFormData.fromDate.toISOString(),
+    foundDateTo: searchFormData.toDate.toISOString(),
     take: take.toString(),
     skip: ((take / 2) * skip - 1).toString(),
   });
