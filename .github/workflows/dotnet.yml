@@ -20,12 +20,12 @@ jobs:
 
     - name: Restore dependencies
       working-directory: ./backend
-      run: dotnet restore LostAndFound.slnx
+      run: dotnet restore LostAndFound.Backend.slnx
 
     - name: Build
       working-directory: ./backend
-      run: dotnet build LostAndFound.slnx --no-restore
+      run: dotnet build LostAndFound.Backend.slnx --no-restore
 
     - name: Test
       working-directory: ./backend
-      run: dotnet test LostAndFound.slnx --no-build --verbosity normal
+      run: dotnet test LostAndFound.Backend.slnx --no-build --verbosity normal
