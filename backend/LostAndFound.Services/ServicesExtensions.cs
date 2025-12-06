@@ -6,6 +6,7 @@ public static class ServicesExtensions
 {
     public static IServiceCollection AddLostAndFoundServices(this IServiceCollection services)
     {
+        services.AddScoped<IExportHandler, ExportHandler>();
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddScoped<IGetItemsHandler, GetItemsHandler>();
         services.AddScoped<IGetSingleItemHandler, GetSingleItemHandler>();

@@ -10,6 +10,8 @@ public interface IDataSeeder
 
 public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
 {
+    private const string FoundDateKey = "Data przekazania do biura";
+
     public async Task Seed()
     {
         if (context.Items.Any())
@@ -21,23 +23,44 @@ public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
 
         await foreach (var item in dataSource.GetItems())
         {
+            var foundDate = GetFoundDateFrom(item);
+
             var itemData = new Item
             {
                 Name = item.Title ?? "",
                 Description = item.Content ?? "Do odbioru w Biurze Rzeczy Znalezionych miasta Płock.",
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = item.UpdatedAt,
+                FoundDate = foundDate,
+                City = "Płock",
+                Country = "Polska",
                 StorageLocation = "Biuro Rzeczy Znalezionych, Płock",
-                Details = item.ContentTypeFields.Select(x => new ItemDetail
-                {
-                    Key = x.NodeName ?? "",
-                    Value = x.NodeValue ?? ""
-                }).ToList()
+
+
+                Details = item.ContentTypeFields
+                    .Where(x => x.NodeName != FoundDateKey)
+                    .Select(x => new ItemDetail
+                    {
+                        Key = x.NodeName ?? "",
+                        Value = x.NodeValue ?? ""
+                    }).ToList()
             };
 
             await context.Items.AddAsync(itemData);
         }
 
         await context.SaveChangesAsync();
+    }
+
+    private static DateTime? GetFoundDateFrom(PlockDataItem item)
+    {
+        var foundDate = item.ContentTypeFields.FirstOrDefault(x => x.NodeName == FoundDateKey);
+
+        if (foundDate == null || string.IsNullOrEmpty(foundDate.NodeValue))
+        {
+            return null;
+        }
+
+        return DateTime.Parse(foundDate.NodeValue);
     }
 }
