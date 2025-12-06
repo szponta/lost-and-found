@@ -13,7 +13,7 @@ using Xunit.Abstractions;
 
 namespace LostAndFound.Tests.Integration;
 
-public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+public class GetSingleItemTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
@@ -21,7 +21,7 @@ public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Progr
 
     private readonly Mock<IDataSeeder> _dataSeeder = new();
 
-    public GetItemsIntegrationTest(WebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
+    public GetSingleItemTests(WebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
     {
         _dataSeeder.Setup(x => x.Seed()).Returns(Task.CompletedTask);
 
@@ -43,7 +43,7 @@ public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Progr
     }
 
     [Fact]
-    public async Task GetItemsTest()
+    public async Task GetSingleItemTest()
     {
         // Arrange
         var itemId = 2333;
@@ -56,66 +56,25 @@ public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Progr
             .WithStatus(ItemStatus.Lost)
             .WithLostDateFrom(new DateTime(2020, 01, 01))
             .WithLostDateTo(new DateTime(2020, 01, 02))
+            .AddDetail().WithKey("Color").WithValue("Red")
+            .AddDetail().WithKey("Size").WithValue("Large")
             .Build();
 
         // Act
-        var response = await _client.GetFromJsonAsync<ItemsResponse>("/api/v1/items");
+        var item = await _client.GetFromJsonAsync<ItemDetailsResponse>($"/api/v1/items/{itemId}");
 
         // Assert
-        response.Should().NotBeNull();
-        response.Items.Should().NotBeNullOrEmpty();
-        var item = response.Items.First(i => i.Id == itemId);
+        item.Should().NotBeNull();
+        item.Id.Should().Be(itemId);
         item.Name.Should().Be("Test Item");
         item.Description.Should().Be("Test Description");
         item.City.Should().Be("Plock");
         item.Status.Should().Be(nameof(ItemStatus.Lost));
         item.LostDateFrom.Should().Be(new DateTime(2020, 01, 01));
         item.LostDateTo.Should().Be(new DateTime(2020, 01, 02));
-    }
 
-    [Fact]
-    public async Task GetItems_GivenLostDateFrom_ShouldNotShowItemsFromBefore()
-    {
-        // Arrange
-        new DbBuilder(_context)
-            .AddItem().WithName("Item 1")
-            .WithFoundDate(new DateTime(2020, 01, 05))
-            .AddItem().WithName("Item 2")
-            .WithFoundDate(new DateTime(2018, 01, 05))
-            .AddItem().WithName("Item 3")
-            .WithFoundDate(null)
-            .Build();
-
-        // Act
-        var response = await _client.GetFromJsonAsync<ItemsResponse>("/api/v1/items?foundDateFrom=2020-01-01");
-
-        // Assert
-        response.Should().NotBeNull();
-        response.Items.Should().NotBeNullOrEmpty();
-        response.Items.Should().HaveCount(1);
-        response.Items[0].Name.Should().Be("Item 1");
-    }
-
-    [Fact]
-    public async Task GetItems_GivenLostDateTo_ShouldNotShowItemsFromAfter()
-    {
-        // Arrange
-        new DbBuilder(_context)
-            .AddItem().WithName("Item 1")
-            .WithFoundDate(new DateTime(2020, 01, 05))
-            .AddItem().WithName("Item 2")
-            .WithFoundDate(new DateTime(2018, 01, 05))
-            .AddItem().WithName("Item 3")
-            .WithFoundDate(null)
-            .Build();
-
-        // Act
-        var response = await _client.GetFromJsonAsync<ItemsResponse>("/api/v1/items?foundDateTo=2020-01-01");
-
-        // Assert
-        response.Should().NotBeNull();
-        response.Items.Should().NotBeNullOrEmpty();
-        response.Items.Should().HaveCount(1);
-        response.Items[0].Name.Should().Be("Item 2");
+        item.Details.Should().HaveCount(2);
+        item.Details.Should().ContainSingle(d => d.Key == "Color" && d.Value == "Red");
+        item.Details.Should().ContainSingle(d => d.Key == "Size" && d.Value == "Large");
     }
 }

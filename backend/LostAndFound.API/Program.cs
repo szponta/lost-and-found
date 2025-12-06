@@ -48,8 +48,13 @@ app.MapGet("/api/v1/test", () => new { message = "hello world" }).WithName("Test
 app.MapGet("/api/v1/items",
     (IGetItemsHandler handler, [FromQuery] int take = 10, int skip = 0,
             string search = "",
-            DateTime? foundDateFrom = null) =>
-        handler.HandleAsync(take, skip, search, foundDateFrom));
+            DateTime? foundDateFrom = null,
+            DateTime? foundDateTo = null
+        ) =>
+        handler.HandleAsync(take, skip, search, foundDateFrom, foundDateTo));
+
+app.MapGet("/api/v1/items/{id:int}",
+    (IGetSingleItemHandler handler, int id) => handler.HandleAsync(id));
 
 Log.Information("Application running.");
 
