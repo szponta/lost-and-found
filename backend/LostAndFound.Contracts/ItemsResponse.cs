@@ -17,4 +17,5 @@ public class ItemsResponseItem
 
     public DateTime? LostDateFrom { get; set; }
     public DateTime? LostDateTo { get; set; }
+    public string Country { get; set; } = "";
 }

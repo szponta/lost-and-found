@@ -49,9 +49,11 @@ app.MapGet("/api/v1/items",
     (IGetItemsHandler handler, [FromQuery] int take = 10, int skip = 0,
             string search = "",
             DateTime? foundDateFrom = null,
-            DateTime? foundDateTo = null
+            DateTime? foundDateTo = null,
+            string country = "",
+            string location = ""
         ) =>
-        handler.HandleAsync(take, skip, search, foundDateFrom, foundDateTo));
+        handler.HandleAsync(take, skip, search, foundDateFrom, foundDateTo, country, location));
 
 app.MapGet("/api/v1/items/{id:int}",
     (IGetSingleItemHandler handler, int id) => handler.HandleAsync(id));

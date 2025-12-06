@@ -97,4 +97,53 @@ public class GetItemsTests
         items[0].Name.Should().Be("Portfel");
         items[0].Description.Should().Be("Skórzany portfel");
     }
+
+    [Fact]
+    public async Task GetItems_FilterByCountry_FiltersItemsByCountry()
+    {
+        // Arrange
+        new DbBuilder(_context)
+            .AddItem()
+            .WithName("Item in USA")
+            .WithCountry("USA")
+            .AddItem()
+            .WithName("Item in Canada")
+            .WithCountry("Canada")
+            .Build();
+
+        // Act
+        var response = await _handler.HandleAsync(country: "Canada");
+
+        // Assert
+        response.Should().NotBeNull();
+        response.Items.Should().NotBeNullOrEmpty();
+        var items = response.Items.ToList();
+        items.Count.Should().Be(1);
+        items[0].Name.Should().Be("Item in Canada");
+        items[0].Country.Should().Be("Canada");
+    }
+
+    [Fact]
+    public async Task GetItems_FilterByEventLocation_FiltersItemsByEventLocation()
+    {
+        // Arrange
+        new DbBuilder(_context)
+            .AddItem()
+            .WithName("Item in New York")
+            .WithEventLocation("New York, Broadway")
+            .AddItem()
+            .WithName("Item in Los Angeles")
+            .WithEventLocation("Los Angeles, Hollywood")
+            .Build();
+
+        // Act
+        var response = await _handler.HandleAsync(location: "hollywood");
+
+        // Assert
+        response.Should().NotBeNull();
+        response.Items.Should().NotBeNullOrEmpty();
+        var items = response.Items.ToList();
+        items.Count.Should().Be(1);
+        items[0].Name.Should().Be("Item in Los Angeles");
+    }
 }
