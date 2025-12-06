@@ -26,9 +26,12 @@ public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
         {
             var foundDate = GetFoundDateFrom(item);
 
+            var name = item.Title?.Replace("BRZ - ", "").Trim() ?? "";
+
             var itemData = new Item
             {
-                Name = item.Title ?? "",
+                Name = name,
+                Status = ItemStatus.Found,
                 Description = item.Content ?? "Do odbioru w Biurze Rzeczy Znalezionych miasta Płock.",
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = item.UpdatedAt,
@@ -57,6 +60,7 @@ public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
             var itemData = new Item
             {
                 Name = item.Name ?? "",
+                Status = ItemStatus.Found,
                 CreatedAt = item.ReceivedAt,
                 UpdatedAt = item.ReceivedAt,
                 FoundDate = item.ReceivedAt,
