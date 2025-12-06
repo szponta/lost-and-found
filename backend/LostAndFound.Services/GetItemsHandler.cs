@@ -26,6 +26,8 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
                     opt => opt.MapFrom(src => src.LostDateFrom.GetValueOrDefault().DateTime))
                 .ForMember(dest => dest.LostDateTo,
                     opt => opt.MapFrom(src => src.LostDateTo.GetValueOrDefault().DateTime))
+                .ForMember(dest => dest.FoundDate,
+                    opt => opt.MapFrom(src => src.FoundDate.GetValueOrDefault().DateTime))
                 ;
 
             cfg.CreateMap<PagedResults<Item>, ItemsResponse>()
