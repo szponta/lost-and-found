@@ -12,8 +12,8 @@ public class Item
 
     public DateTimeOffset? FoundDate { get; set; }
 
-    public string? EventLocation { get; set; }
-    public string? StorageLocation { get; set; }
+    public string EventLocation { get; set; } = "";
+    public string StorageLocation { get; set; } = "";
 
     public string? City { get; set; }
     public string Country { get; set; } = "Polska";
