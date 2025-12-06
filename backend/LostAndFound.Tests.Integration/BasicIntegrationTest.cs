@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net.Http.Json;
+using FluentAssertions;
 using Meziantou.Extensions.Logging.Xunit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,13 +9,13 @@ using Xunit.Abstractions;
 
 namespace LostAndFound.Tests.Integration;
 
-public class UnitTest1 : IClassFixture<WebApplicationFactory<Program>>
+public class BasicIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly HttpClient client;
+    private readonly HttpClient _client;
 
-    public UnitTest1(WebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
+    public BasicIntegrationTest(WebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
     {
-        client = factory
+        _client = factory
             .WithWebHostBuilder(builder =>
             {
                 builder.ConfigureLogging(x =>
@@ -35,9 +36,15 @@ public class UnitTest1 : IClassFixture<WebApplicationFactory<Program>>
         // Arrange
 
         // Act
-        var response = await client.GetStringAsync("/api/v1/test");
+        var response = await _client.GetFromJsonAsync<Response>("/api/v1/test");
 
         // Assert
-        response.Should().BeEquivalentTo("hello world");
+        response.Should().NotBeNull();
+        response.Message.Should().BeEquivalentTo("hello world");
+    }
+
+    private class Response
+    {
+        public string Message { get; init; } = null!;
     }
 }
