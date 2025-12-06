@@ -10,7 +10,7 @@ export interface ItemsResponse {
   items: ItemsResponseItem[];
 }
 
-interface ItemsResponseItem {
+export interface ItemsResponseItem {
   id: number;
   name: string;
   description: string;

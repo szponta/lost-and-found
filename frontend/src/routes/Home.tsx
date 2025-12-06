@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import Navbar from "../components/Navbar";
 import FormGroupInput from "../components/FormGroupInput";
-import type { FormData } from "../types/form.types.ts";
+import type { FormData, ItemsResponseItem } from "../types/form.types.ts";
 import { submitSearchRequest } from "../services/search.services.ts";
 
 const Home = () => {
@@ -72,7 +72,13 @@ const Home = () => {
     const data: FormData | null = getFormData();
     if (!data) return;
 
-    const result = await submitSearchRequest(data);
+    const items = (await submitSearchRequest(data)) as ItemsResponseItem[];
+
+    console.group();
+    items.forEach((item: ItemsResponseItem) => {
+      console.log(item);
+    });
+    console.groupEnd();
   };
 
   return (
