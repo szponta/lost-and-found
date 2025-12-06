@@ -31,7 +31,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/v1/test", () => "hello world").WithName("Test");
+app.MapGet("/api/v1/test", () => new { message = "hello world" }).WithName("Test");
 
 Log.Information("Application running.");
 

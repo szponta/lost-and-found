@@ -1,0 +1,32 @@
+services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - frontend_network
+    volumes:
+      - ./frontend:/frontend
+      - frontend_node_modules:/frontend/node_modules
+
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - frontend_network
+    volumes:
+      - ./backend:/backend
+
+volumes:
+  frontend_node_modules:
+
+networks:
+  frontend_network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
