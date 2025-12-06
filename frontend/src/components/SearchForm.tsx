@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import type { FormData, SearchResultItem } from "../types/form.types.ts";
+import type { FormData, ItemStatusType, SearchResultItem } from "../types/form.types.ts";
 import { submitSearchRequest } from "../services/search.services.ts";
 import FormGroupInput from "../components/FormGroupInput";
 
@@ -17,7 +17,8 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
   const locationRef = useRef<HTMLInputElement | null>(null);
   const fromDateRef = useRef<HTMLInputElement | null>(null);
   const toDateRef = useRef<HTMLInputElement | null>(null);
-  const formInputsRefs = [nameRef, countryRef, locationRef, fromDateRef, toDateRef];
+  const statusRef = useRef<HTMLSelectElement | null>(null);
+  const formInputsToValidate = [nameRef, countryRef, statusRef];
   const [lastQuery, setLastQuery] = useState<FormData | null>(null);
 
   useEffect(() => {
@@ -43,12 +44,11 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
 
   const validateFormData = (): boolean => {
     let isValid = true;
-    formInputsRefs.forEach((ref) => {
+    formInputsToValidate.forEach((ref) => {
       if (!ref.current) {
         isValid = false;
         return;
       }
-
       const current = ref.current;
       if (!current.textContent && !current.value) {
         console.log(current, "empty value");
@@ -56,7 +56,6 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         return;
       }
     });
-
     return isValid;
   };
 
@@ -67,6 +66,7 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
       location: locationRef.current?.value || "",
       fromDate: fromDateRef.current?.value ? new Date(fromDateRef.current.value) : new Date(),
       toDate: toDateRef.current?.value ? new Date(toDateRef.current.value) : new Date(),
+      status: (statusRef.current?.value as ItemStatusType) || "lost",
     };
     return data;
   };
@@ -94,9 +94,10 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         labelText="Nazwa zgubionego przedmiotu"
         placeholder="np. Telefon komórkowy"
         defaultValue="Telefon"
+        required
       />
 
-      <select ref={countryRef} id="country">
+      <select ref={countryRef} id="country" required>
         <option value="polska">Polska</option>
         <option value="niemcy">Niemcy</option>
         <option value="czechy">Czechy</option>
@@ -124,6 +125,12 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         type="date"
         defaultValue={new Date().toISOString().split("T")[0]}
       />
+
+      <select ref={statusRef} id="status" required>
+        <option value="lost">Zaginione</option>
+        <option value="found">Znalezione</option>
+      </select>
+
       <button type="submit">Wyślij</button>
     </form>
   );

@@ -1,9 +1,12 @@
+export type ItemStatusType = "found" | "lost";
+
 export interface FormData {
   name: string;
   country: string;
   location: string;
   fromDate: Date;
   toDate: Date;
+  status: ItemStatusType;
 }
 
 export interface SearchResults {
