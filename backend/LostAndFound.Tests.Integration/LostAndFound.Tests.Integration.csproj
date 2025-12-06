@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LostAndFound.API\LostAndFound.API.csproj" />
+    <ProjectReference Include="..\LostAndFound.Data.Plock\LostAndFound.Data.Plock.csproj" />
     <ProjectReference Include="..\LostAndFound.Services\LostAndFound.Services.csproj" />
   </ItemGroup>
 
