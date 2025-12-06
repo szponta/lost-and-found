@@ -115,7 +115,7 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         ref={fromDateRef}
         labelText="Data od"
         type="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
+        defaultValue={new Date("2023-12-06").toISOString().split("T")[0]}
       />
       <FormGroupInput
         id="toDate"
