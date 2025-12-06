@@ -95,4 +95,27 @@ public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Progr
         response.Items.Should().HaveCount(1);
         response.Items[0].Name.Should().Be("Item 1");
     }
+
+    [Fact]
+    public async Task GetItems_GivenLostDateTo_ShouldNotShowItemsFromAfter()
+    {
+        // Arrange
+        new DbBuilder(_context)
+            .AddItem().WithName("Item 1")
+            .WithFoundDate(new DateTime(2020, 01, 05))
+            .AddItem().WithName("Item 2")
+            .WithFoundDate(new DateTime(2018, 01, 05))
+            .AddItem().WithName("Item 3")
+            .WithFoundDate(null)
+            .Build();
+
+        // Act
+        var response = await _client.GetFromJsonAsync<ItemsResponse>("/api/v1/items?foundDateTo=2020-01-01");
+
+        // Assert
+        response.Should().NotBeNull();
+        response.Items.Should().NotBeNullOrEmpty();
+        response.Items.Should().HaveCount(1);
+        response.Items[0].Name.Should().Be("Item 2");
+    }
 }
