@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import Header from "../components/Header";
+import "src/styles/Header.css";
+import "src/styles/Navbar.css";
 
 import SearchForm from "../components/SearchForm.tsx";
 import type { SearchResultItem } from "../types/form.types.ts";
@@ -13,6 +16,7 @@ const Home = () => {
 
   return (
     <>
+      <Header />
       <Navbar />
       <SearchForm
         setSearchResult={setSearchResult}
