@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   useEffect(() => {
@@ -13,7 +14,12 @@ const Home = () => {
     };
     fetchData();
   }, []);
-  return <h1>h</h1>;
+  return (
+    <>
+      <Navbar />
+      <h1>h</h1>
+    </>
+  );
 };
 
 export default Home;
