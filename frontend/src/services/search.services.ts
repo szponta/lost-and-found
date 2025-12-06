@@ -24,7 +24,7 @@ export const submitSearchRequest = async (
     skip: skip.toString(),
   });
 
-  const URL: string = `/api/v1/items/${params.toString()}`;
+  const URL: string = `/api/v1/items/?${params.toString()}`;
 
   try {
     const response = await fetch(URL, {
