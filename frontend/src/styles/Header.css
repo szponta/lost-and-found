@@ -1,0 +1,66 @@
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #fff;
+}
+
+#logo {
+  text-decoration: none;
+  color: black;
+  gap: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 16px;
+}
+
+img.polski_herb {
+  height: 30px;
+}
+
+div#ue {
+  width: 50px;
+}
+
+.header-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 1rem;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  flex-grow: 1;
+  border-left: 2px solid #dc3545;
+  border-right: 2px solid #eee;
+  vertical-align: middle;
+}
+
+#header-span {
+  font-weight: 600;
+  padding-left: clamp(0.5rem, 2%, 1rem);
+  line-height: 3.5;
+}
+
+#my-gov a {
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  margin-left: auto;
+  padding: 0.5rem 1rem;
+  background-color: #0052a5;
+  svg {
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  /* Add responsive styles here, e.g., */
+  .header-center {
+    display: none;
+  }
+}

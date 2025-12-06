@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", "Arial", sans-serif;
+}
+
+#root {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
