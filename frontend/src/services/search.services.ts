@@ -1,12 +1,12 @@
-import type { FormData, ItemsResponse, ItemsResponseItem } from "../types/form.types";
+import type { FormData, SearchResults, SearchResultItem } from "../types/form.types";
 
 const FILE_NAME: string = "search.services.ts";
 
 export const submitSearchRequest = async (
   searchFormData: FormData,
-  take: number = 10,
-  skip: number = 0
-): Promise<ItemsResponseItem[]> => {
+  take: number,
+  skip: number
+): Promise<SearchResultItem[]> => {
   // console.group();
   // for (const key in searchFormData) {
   //   console.log(key.toString(), searchFormData[key as keyof FormData]);
@@ -20,7 +20,7 @@ export const submitSearchRequest = async (
     // foundDateFrom: searchFormData.fromDate.toISOString(),
     // foundDateTo: searchFormData.toDate.toISOString(),
     take: take.toString(),
-    skip: skip.toString(),
+    skip: ((take / 2) * skip - 1).toString(),
   });
 
   const URL: string = `/api/v1/items/?${params.toString()}`;
@@ -32,7 +32,7 @@ export const submitSearchRequest = async (
         "Content-Type": "application/json",
       },
     });
-    const data: ItemsResponse = await response.json();
+    const data: SearchResults = await response.json();
     return data.items;
   } catch (error: any) {
     console.error(error.message, FILE_NAME, "submitSearchRequest");

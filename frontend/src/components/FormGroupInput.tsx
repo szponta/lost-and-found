@@ -14,7 +14,6 @@ interface Props {
 }
 
 const FormGroupInput = ({
-  key,
   id,
   labelText,
   ref = null,
@@ -26,15 +25,7 @@ const FormGroupInput = ({
   return (
     <div className="form-group">
       <label>{labelText}</label>
-      <input
-        key={key}
-        id={id}
-        ref={ref}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        defaultValue={defaultValue}
-      />
+      <input id={id} ref={ref} type={type} placeholder={placeholder} required={required} defaultValue={defaultValue} />
     </div>
   );
 };

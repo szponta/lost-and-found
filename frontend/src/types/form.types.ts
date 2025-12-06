@@ -6,11 +6,11 @@ export interface FormData {
   toDate: Date;
 }
 
-export interface ItemsResponse {
-  items: ItemsResponseItem[];
+export interface SearchResults {
+  items: SearchResultItem[];
 }
 
-export interface ItemsResponseItem {
+export interface SearchResultItem {
   id: number;
   name: string;
   description: string;
