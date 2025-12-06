@@ -1,3 +1,4 @@
+using LostAndFound.Data.Plock;
 using LostAndFound.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,14 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
+// add data from datasource to in-memory database
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<LostAndFoundDbContext>();
+    await DataSeeder.Seed(dbContext);
+}
+
+
 app.MapOpenApi();
 
 app.UseSwagger();
@@ -42,3 +51,30 @@ app.MapGet("/api/v1/items",
 Log.Information("Application running.");
 
 app.Run();
+
+public static class DataSeeder
+{
+    public static async Task Seed(LostAndFoundDbContext context)
+    {
+        if (context.Items.Any()) return;
+
+        var dataSource = new DataSource();
+
+        // async foreach
+        await foreach (var item in dataSource.GetItems())
+        {
+            var itemData = new Item
+            {
+                Title = item.Title ?? "",
+                Description = item.Content ?? "Do odbioru w Biurze Rzeczy Znalezionych miasta Płock.",
+                CreatedAt = item.CreatedAt,
+                UpdatedAt = item.UpdatedAt
+                // Details = item.ContentTypeFields.Select()
+            };
+
+            await context.Items.AddAsync(itemData);
+        }
+
+        await context.SaveChangesAsync();
+    }
+}

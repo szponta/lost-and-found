@@ -7,10 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="1665396002_ams8nlw7CGHcawRU.json"/>
-        <None Update="plock-data.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
+        <!-- make the JSON an embedded resource with logical name 'data.plock' -->
+        <EmbeddedResource Include="plock-data.json">
+            <LogicalName>data.plock</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

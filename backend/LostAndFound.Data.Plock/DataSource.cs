@@ -6,25 +6,50 @@ namespace LostAndFound.Data.Plock;
 
 public interface IDataSource
 {
-    Task<IList<PlockDataItem>> GetItems();
+    IAsyncEnumerable<PlockDataItem> GetItems();
 }
 
-public class DataSource
+public class DataSource : IDataSource
 {
-    public async Task<IList<PlockDataItem>> GetItems()
+    // Look for embedded resource names that match one of these suffixes
+    private static readonly string[] ResourceSuffixes = ["data.plock", "plock-data.json"];
+
+    private readonly JsonSerializerOptions _options;
+
+    public DataSource()
     {
-        var options = new JsonSerializerOptions
+        _options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
 
-        options.Converters.Add(new NullableDateTimeConverter());
+        _options.Converters.Add(new NullableDateTimeConverter());
+    }
 
-        await using var stream = new FileStream("plock-data.json", FileMode.Open, FileAccess.Read);
-        var data = await JsonSerializer.DeserializeAsync<IList<PlockDataItem>>(stream, options) ??
-                   throw new InvalidOperationException();
-        return data;
+    public async IAsyncEnumerable<PlockDataItem> GetItems()
+    {
+        var asm = typeof(DataSource).Assembly;
+        var resources = asm.GetManifestResourceNames();
+
+        // Prefer exact suffix matches, fall back to any name containing "plock"
+        var resourceName = resources
+                               .FirstOrDefault(n =>
+                                   ResourceSuffixes.Any(s => n.EndsWith(s, StringComparison.OrdinalIgnoreCase)))
+                           ?? resources.FirstOrDefault(n =>
+                               n.IndexOf("plock", StringComparison.OrdinalIgnoreCase) >= 0);
+
+        if (resourceName == null)
+            yield break;
+
+        await using var stream = asm.GetManifestResourceStream(resourceName);
+        if (stream == null)
+            yield break;
+
+        var data = await JsonSerializer.DeserializeAsync<IList<PlockDataItem>>(stream, _options)
+                   ?? throw new InvalidOperationException("Deserialized data is null.");
+
+        foreach (var item in data) yield return item;
     }
 }
 

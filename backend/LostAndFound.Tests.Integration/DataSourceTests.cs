@@ -13,7 +13,7 @@ public class DataSourceTests
         // Arrange
 
         // Act
-        var data = await _sut.GetItems();
+        var data = await _sut.GetItems().ToListAsync();
 
         // Assert
         data.Should().NotBeNull();
