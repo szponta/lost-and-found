@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Header from "../components/Header";
+import "src/styles/Header.css";
+import "src/styles/Navbar.css";
 
 const Home = () => {
   useEffect(() => {
@@ -16,6 +19,7 @@ const Home = () => {
   }, []);
   return (
     <>
+      <Header />
       <Navbar />
       <h1>h</h1>
     </>
