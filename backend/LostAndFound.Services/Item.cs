@@ -18,9 +18,9 @@ public class Item
     public string? City { get; set; }
     public string Country { get; set; } = "Polska";
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
@@ -34,9 +34,9 @@ public class ItemDetail
     public int ItemId { get; set; }
     public string Key { get; set; } = "";
     public string Value { get; set; } = "";
-    public DateTime? CreatedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
     public string? UpdatedBy { get; set; }
     public Item Item { get; set; } = null!;
 }

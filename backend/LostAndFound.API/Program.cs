@@ -58,6 +58,13 @@ app.MapGet("/api/v1/items",
 app.MapGet("/api/v1/items/{id:int}",
     (IGetSingleItemHandler handler, int id) => handler.HandleAsync(id));
 
+app.MapPost("/api/v1/items",
+    (IPostItemHandler handler, [FromBody] CreateItemRequest request) => handler.CreateItemHeaderAsync(request));
+
+app.MapPost("/api/v1/items/{itemId:int}/details",
+    (IPostItemHandler handler, [FromRoute] int itemId, [FromBody] IList<CreateItemDetailsRequest> request) =>
+        handler.CreateItemDetailsAsync(itemId, request));
+
 Log.Information("Application running.");
 
 app.Run();

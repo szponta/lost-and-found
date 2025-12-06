@@ -103,6 +103,20 @@ public class DbBuilder(LostAndFoundDbContext context)
             item.Country = country;
             return this;
         }
+
+        public DbItemBuilder WithCreatedAt(DateTimeOffset? createdAt)
+        {
+            var item = _context.Set<Item>().Local.Last();
+            item.CreatedAt = createdAt;
+            return this;
+        }
+
+        public DbItemBuilder WithUpdatedAt(DateTimeOffset? updatedAt)
+        {
+            var item = _context.Set<Item>().Local.Last();
+            item.UpdatedAt = updatedAt;
+            return this;
+        }
     }
 
     public class DbItemDetailBuilder(DbBuilder builder) : DbItemBuilder(builder)
@@ -118,6 +132,13 @@ public class DbBuilder(LostAndFoundDbContext context)
         {
             var detail = _context.Set<ItemDetail>().Local.Last();
             detail.Value = value;
+            return this;
+        }
+
+        public DbItemDetailBuilder WithDetailCreatedAt(DateTimeOffset? createdAt)
+        {
+            var detail = _context.Set<ItemDetail>().Local.Last();
+            detail.CreatedAt = createdAt;
             return this;
         }
     }
