@@ -44,9 +44,10 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
         var dbSet = context.Set<Item>()
             .Select(item => new SearchItem
             {
-                Item = item, Search = $"{item.Name} {item.Description}".ToLowerInvariant(),
+                Item = item,
+                Search = $"{item.Name} {item.Description}".ToLowerInvariant(),
                 Country = item.Country.ToLowerInvariant(),
-                Location = item.EventLocation != null ? item.EventLocation.ToLowerInvariant() : "",
+                Location = $"{item.EventLocation} {item.City}".ToLowerInvariant(),
                 DetailSearch = context.Set<ItemDetail>()
                     .Where(d => d.ItemId == item.Id)
                     .Select(d => d.Value.ToLowerInvariant())
@@ -58,6 +59,23 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
             country = country.ToLowerInvariant();
             dbSet = dbSet.Where(x => x.Country == country);
         }
+
+        if (!string.IsNullOrWhiteSpace(location))
+        {
+            location = location.ToLowerInvariant();
+            dbSet = dbSet.Where(x => x.Location.Contains(location));
+        }
+
+        if (foundDateFrom != null)
+        {
+            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
+        }
+
+        if (foundDateTo != null)
+        {
+            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
+        }
+
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -96,22 +114,6 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
                     (word5 != "" && y.Contains(word5))
                 )
             }).OrderByDescending(x => x.Value);
-        }
-
-        if (foundDateFrom != null)
-        {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
-        }
-
-        if (foundDateTo != null)
-        {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
-        }
-
-        if (!string.IsNullOrWhiteSpace(location))
-        {
-            location = location.ToLowerInvariant();
-            dbSet = dbSet.Where(x => x.Location.Contains(location));
         }
 
         var totalEntities = dbSet.Count();
