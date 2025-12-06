@@ -4,7 +4,7 @@ namespace LostAndFound.Services;
 
 public static class ServicesExtensions
 {
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    public static IServiceCollection AddLostAndFoundServices(this IServiceCollection services)
     {
         services.AddScoped<IGetItemsHandler, GetItemsHandler>();
         services.AddScoped<IItemsRepository, ItemsRepository>();

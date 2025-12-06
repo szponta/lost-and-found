@@ -6,8 +6,10 @@ public static class DbFactory
 {
     public static LostAndFoundDbContext GetInMemoryDbContext()
     {
+        var guid = Guid.NewGuid().ToString();
+
         var options = new DbContextOptionsBuilder<LostAndFoundDbContext>()
-            .UseInMemoryDatabase("InMemoryLostAndFoundDb")
+            .UseInMemoryDatabase(guid)
             .Options;
 
         var context = new LostAndFoundDbContext(options);
