@@ -16,13 +16,14 @@ public class DataSource
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
-        
+
         options.Converters.Add(new NullableDateTimeConverter());
-        
+
         await using var stream = new FileStream("plock-data.json", FileMode.Open, FileAccess.Read);
-        var data = await JsonSerializer.DeserializeAsync<IList<PlockDataItem>>(stream, options) ?? throw  new InvalidOperationException();
+        var data = await JsonSerializer.DeserializeAsync<IList<PlockDataItem>>(stream, options) ??
+                   throw new InvalidOperationException();
         return data;
     }
 }

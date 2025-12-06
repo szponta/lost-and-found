@@ -1,10 +1,11 @@
 using LostAndFound.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", true, true)
     .AddEnvironmentVariables()
     .Build();
 
@@ -20,7 +21,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MyDbContext>(o => o.UseInMemoryDatabase("MyMemoryDb"));
+builder.Services.AddDbContext<LostAndFoundDbContext>(o => o.UseInMemoryDatabase("MyMemoryDb"));
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -32,6 +35,9 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.MapGet("/api/v1/test", () => new { message = "hello world" }).WithName("Test");
+
+app.MapGet("/api/v1/items",
+    (IGetItemsHandler handler, [FromQuery] int take = 10, int skip = 0) => handler.HandleAsync(take, skip));
 
 Log.Information("Application running.");
 

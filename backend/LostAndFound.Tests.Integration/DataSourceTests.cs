@@ -5,15 +5,15 @@ namespace LostAndFound.Tests.Integration;
 
 public class DataSourceTests
 {
-    private readonly DataSource sut = new ();
+    private readonly DataSource _sut = new();
 
     [Fact]
     public async Task GetDataTest()
     {
         // Arrange
-        
+
         // Act
-        var data = await sut.GetItems();
+        var data = await _sut.GetItems();
 
         // Assert
         data.Should().NotBeNull();

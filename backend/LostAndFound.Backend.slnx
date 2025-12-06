@@ -1,7 +1,8 @@
 <Solution>
-  <Project Path="LostAndFound.API/LostAndFound.API.csproj" />
-  <Project Path="LostAndFound.Data.Plock/LostAndFound.Data.Plock.csproj" />
-  <Project Path="LostAndFound.Services/LostAndFound.Services.csproj" />
-  <Project Path="LostAndFound.Tests.Integration/LostAndFound.Tests.Integration.csproj" />
-  <Project Path="LostAndFound.Tests.Unit/LostAndFound.Tests.Unit.csproj" />
+    <Project Path="LostAndFound.API/LostAndFound.API.csproj"/>
+    <Project Path="LostAndFound.Contracts/LostAndFound.Contracts.csproj"/>
+    <Project Path="LostAndFound.Data.Plock/LostAndFound.Data.Plock.csproj"/>
+    <Project Path="LostAndFound.Services/LostAndFound.Services.csproj"/>
+    <Project Path="LostAndFound.Tests.Integration/LostAndFound.Tests.Integration.csproj"/>
+    <Project Path="LostAndFound.Tests.Unit/LostAndFound.Tests.Unit.csproj"/>
 </Solution>
