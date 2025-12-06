@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import type { FormData, ItemStatusType, SearchResultItem } from "../types/form.types.ts";
+import type { FormData, ItemStatusType, SearchResultItem } from "../types/search.types.ts";
 import { submitSearchRequest } from "../services/search.services.ts";
 import FormGroupInput from "../components/FormGroupInput";
 
@@ -110,7 +110,7 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         placeholder="np. Warszawa"
         defaultValue="Warszawa"
       />
-      <span>Maksymalnie tydzień</span>
+
       <FormGroupInput
         id="fromDate"
         ref={fromDateRef}

@@ -1,10 +1,7 @@
-import type { FormData, SearchResults, SearchResultItem } from "../types/form.types";
+import type { FormData, SearchResults, SearchResultItem } from "../types/search.types";
+import modifyDate from "../utils/modifyDate";
 
 const FILE_NAME: string = "search.services.ts";
-
-const modifyDate = (date: Date): string => {
-  return date.toISOString().split("T")[0];
-};
 
 export const submitSearchRequest = async (
   searchFormData: FormData,
