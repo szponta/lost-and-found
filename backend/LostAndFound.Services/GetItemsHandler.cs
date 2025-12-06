@@ -145,9 +145,3 @@ public class PagedResults<T>
     public int Take { get; set; }
     public IList<T> Items { get; set; } = [];
 }
-
-public class PaginationParameters
-{
-    public int Skip { get; set; }
-    public int Take { get; set; }
-}
