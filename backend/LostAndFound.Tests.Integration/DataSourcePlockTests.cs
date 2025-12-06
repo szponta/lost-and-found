@@ -3,9 +3,9 @@ using LostAndFound.Data.Plock;
 
 namespace LostAndFound.Tests.Integration;
 
-public class DataSourceTests
+public class DataSourcePlockTests
 {
-    private readonly DataSource _sut = new();
+    private readonly DataSourcePlock _sut = new();
 
     [Fact]
     public async Task GetDataTest()

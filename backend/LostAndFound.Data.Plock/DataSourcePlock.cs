@@ -4,19 +4,14 @@ using System.Text.Json.Serialization;
 
 namespace LostAndFound.Data.Plock;
 
-public interface IDataSource
-{
-    IAsyncEnumerable<PlockDataItem> GetItems();
-}
-
-public class DataSource : IDataSource
+public class DataSourcePlock
 {
     // Look for embedded resource names that match one of these suffixes
     private static readonly string[] ResourceSuffixes = ["data.plock", "plock-data.json"];
 
     private readonly JsonSerializerOptions _options;
 
-    public DataSource()
+    public DataSourcePlock()
     {
         _options = new JsonSerializerOptions
         {
@@ -29,7 +24,7 @@ public class DataSource : IDataSource
 
     public async IAsyncEnumerable<PlockDataItem> GetItems()
     {
-        var asm = typeof(DataSource).Assembly;
+        var asm = typeof(DataSourcePlock).Assembly;
         var resources = asm.GetManifestResourceNames();
 
         // Prefer exact suffix matches, fall back to any name containing "plock"
@@ -40,11 +35,15 @@ public class DataSource : IDataSource
                                n.IndexOf("plock", StringComparison.OrdinalIgnoreCase) >= 0);
 
         if (resourceName == null)
+        {
             yield break;
+        }
 
         await using var stream = asm.GetManifestResourceStream(resourceName);
         if (stream == null)
+        {
             yield break;
+        }
 
         var data = await JsonSerializer.DeserializeAsync<IList<PlockDataItem>>(stream, _options)
                    ?? throw new InvalidOperationException("Deserialized data is null.");
@@ -60,16 +59,28 @@ public class NullableDateTimeConverter : JsonConverter<DateTime?>
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var str = reader.GetString();
-        if (string.IsNullOrWhiteSpace(str)) return null;
-        if (str.Equals("0000-00-00 00:00:00")) return null;
+        if (string.IsNullOrWhiteSpace(str))
+        {
+            return null;
+        }
+
+        if (str.Equals("0000-00-00 00:00:00"))
+        {
+            return null;
+        }
+
         return DateTime.ParseExact(str, Format, CultureInfo.InvariantCulture);
     }
 
     public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
     {
         if (value is null)
+        {
             writer.WriteNullValue();
+        }
         else
+        {
             writer.WriteStringValue(value.Value.ToString(Format, CultureInfo.InvariantCulture));
+        }
     }
 }

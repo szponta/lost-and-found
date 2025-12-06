@@ -21,8 +21,15 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
     private readonly IMapper _mapper =
         new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<Item, ItemsResponseItem>();
-            cfg.CreateMap<PagedResults<Item>, ItemsResponse>();
+            cfg.CreateMap<Item, ItemsResponseItem>()
+                .ForMember(dest => dest.LostDateFrom,
+                    opt => opt.MapFrom(src => src.LostDateFrom.GetValueOrDefault().DateTime))
+                .ForMember(dest => dest.LostDateTo,
+                    opt => opt.MapFrom(src => src.LostDateTo.GetValueOrDefault().DateTime))
+                ;
+
+            cfg.CreateMap<PagedResults<Item>, ItemsResponse>()
+                ;
         }).CreateMapper();
 
     public async Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "",
