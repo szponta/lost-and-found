@@ -18,6 +18,8 @@ public class GetSingleItemHandler(LostAndFoundDbContext context) : IGetSingleIte
                 opt => opt.MapFrom(src => src.LostDateFrom.GetValueOrDefault().DateTime))
             .ForMember(dest => dest.LostDateTo, opt => opt.MapFrom(src => src.LostDateTo.GetValueOrDefault().DateTime))
             .ForMember(dest => dest.FoundDate, opt => opt.MapFrom(src => src.FoundDate.GetValueOrDefault().DateTime))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt.GetValueOrDefault().DateTime))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt.GetValueOrDefault().DateTime))
             ;
         cfg.CreateMap<ItemDetail, ItemDetailsResponseDetail>();
     }).CreateMapper();
