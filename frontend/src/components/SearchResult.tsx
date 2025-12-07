@@ -1,4 +1,5 @@
 import type { SearchResultItem } from "../types/search.types";
+import "src/styles/SearchResults.css";
 
 interface Props {
   items: SearchResultItem[];
@@ -9,19 +10,23 @@ interface Props {
 }
 
 const SearchResult = ({ items, setItemsPerPage, setCurrentPage, currentPage, isNextPageAvailable }: Props) => {
+  const statusMap: Record<string, string> = {
+    lost: "Zgubione",
+    found: "Znalezione",
+  };
   return (
-    <div>
-      <div>
+    <div className="results-container">
+      <div className="search-result">
         {items.map((item) => {
           return (
-            <div key={item.id} style={{ border: "5px solid #000" }}>
-              <a href={`http://localhost:8080/items/${item.id}`}>{item.title}</a>
-              <p>{item.status}</p>
-              <p>{item.eventLocation}</p>
-              <p>{item.storageLocation}</p>
-              <p>{item.city}</p>
-              <p>{item.lostDateFrom}</p>
-              <p>{item.lostDateTo}</p>
+            <div key={item.id} className="result">
+              <a href={`http://localhost:8080/items/${item.id}`} className="result-title">
+                <h3>{item.title}</h3>
+              </a>
+              <p>Status: {statusMap[item.status]}</p>
+              <p>Miejsce przechowywania: {item.storageLocation}</p>
+              <p>Miasto: {item.city}</p>
+              <p>Data Znalezienia: {item.lostDateTo}</p>
             </div>
           );
         })}

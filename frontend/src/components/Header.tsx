@@ -2,7 +2,7 @@ const Header = () => {
   return (
     <header>
       <a href="https://www.gov.pl/" id="logo">
-        <img src="https://www.gov.pl/img/Herb_Polski.svg" alt="" className="polski_herb" />
+        <img src="https://www.gov.pl/img/Herb_Polski.svg" alt="Herb Polski" className="polski_herb" />
         <h3>gov.pl</h3>
       </a>
       <div className="header-center">

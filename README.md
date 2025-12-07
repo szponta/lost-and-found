@@ -2,7 +2,7 @@
 
 ## Opis projektu
 
-System do zarządzania rzeczami zgubionymi i znalezionymi.
+System do zarządzania rzeczami zgubionymi i znalezionymi. Aplikacja integruje dane z Płocka i Olsztyna, umożliwiając użytkownikowi przeszukiwanie dostępnej bazy. Dodatkowo użytkownik może rejestrować nowe zgubione lub znalezione przedmioty poprzez prosty interfejs.
 
 ## Rozruch
 

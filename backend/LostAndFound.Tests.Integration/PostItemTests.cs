@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Json;
+using System.Text;
 using FluentAssertions;
 using LostAndFound.API;
+using LostAndFound.Contracts;
 using LostAndFound.Services;
 using Meziantou.Extensions.Logging.Xunit;
 using Microsoft.AspNetCore.Hosting;
@@ -127,5 +129,34 @@ public class PostItemTests : IClassFixture<WebApplicationFactory<Program>>
         colorDetail.CreatedAt.Should().Be(new DateTimeOffset(2025, 12, 06, 11, 11, 11, 11, TimeSpan.Zero));
         materialDetail.CreatedAt.Should().Be(new DateTimeOffset(2025, 12, 06, 11, 11, 11, 11, TimeSpan.Zero));
         sizeDetail.CreatedAt.Should().Be(new DateTimeOffset(2025, 02, 02, 10, 10, 10, 10, TimeSpan.Zero));
+    }
+
+    [Fact]
+    public async Task PostAndGet_Test()
+    {
+        // Arrange
+        var request =
+            @"{
+                ""name"":""kopytko"",
+                ""status"":""lost"",
+                ""eventLocation"":""Park Centralny"",
+                ""storageLocation"":""Posterunek policji"",
+                ""city"":""Warszawa"",
+                ""country"":""Polska"",
+                ""lostDateFrom"":""2023-12-06"",
+                ""lostDateTo"":""2025-12-07""
+            }";
+
+        var postResponse = await _client.PostAsync("/api/v1/items",
+            new StringContent(request, Encoding.UTF8, "application/json"));
+        postResponse.EnsureSuccessStatusCode();
+
+        // Act
+        var getResponse = await _client.GetFromJsonAsync<ItemsResponse>(
+            "/api/v1/items/?take=20&skip=0&search=kopytko&foundDateFrom=2023-12-06&foundDateTo=2025-12-07&country=Polska&city=Warszawa");
+
+        // Assert
+        getResponse.Should().NotBeNull();
+        getResponse.Items.Should().NotBeNullOrEmpty();
     }
 }

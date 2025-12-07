@@ -68,12 +68,18 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
 
         if (foundDateFrom != null)
         {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
+            dbSet = dbSet.Where(x => (x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom) ||
+                                     (x.Item.LostDateFrom != null && x.Item.LostDateFrom >= foundDateFrom &&
+                                      x.Item.LostDateTo != null && x.Item.LostDateTo >= foundDateFrom)
+            );
         }
 
         if (foundDateTo != null)
         {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
+            dbSet = dbSet.Where(x => (x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo) ||
+                                     (x.Item.LostDateFrom != null && x.Item.LostDateFrom <= foundDateTo &&
+                                      x.Item.LostDateTo != null && x.Item.LostDateTo <= foundDateTo)
+            );
         }
 
 

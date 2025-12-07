@@ -8,6 +8,7 @@
 
 div.form-group:has(input#name) {
   input {
+    font-size: 1.2rem;
     width: 100%;
     margin: 0;
     &:focus {
@@ -55,7 +56,7 @@ select#country {
   margin-left: 0;
 }
 
-button {
+button.submit {
   padding: 0.5rem;
   background-color: #0865c9;
   color: white;

@@ -10,12 +10,12 @@ export const submitSearchRequest = async (
 ): Promise<SearchResultItem[]> => {
   const params = new URLSearchParams({
     take: take.toString(),
-    skip: ((take / 2) * skip - 1).toString(),
+    skip: (skip - 1).toString(),
     search: searchFormData.name,
     foundDateFrom: modifyDate(searchFormData.fromDate),
     foundDateTo: modifyDate(searchFormData.toDate),
     country: searchFormData.country,
-    location: searchFormData.location,
+    city: searchFormData.city,
   });
 
   const URL: string = `/api/v1/items/?${params.toString()}`;

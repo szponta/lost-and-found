@@ -3,7 +3,7 @@ export type ItemStatusType = "found" | "lost";
 export interface FormData {
   name: string;
   country: string;
-  location: string;
+  city: string;
   fromDate: Date;
   toDate: Date;
   status: ItemStatusType;

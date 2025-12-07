@@ -65,76 +65,80 @@ const AddForm = () => {
   };
 
   return (
-    <form onSubmit={handleOnSubmit}>
+    <form onSubmit={handleOnSubmit} className="add-form">
       <FormGroupInput
         id="name"
         ref={nameRef}
-        labelText="Nazwa zgubionego przedmiotu"
-        placeholder="np. Telefon komórkowy"
+        labelText=""
+        placeholder="Nazwa zgubionego przedmiotu"
         defaultValue="Telefon"
         required
       />
 
-      <select ref={statusRef} id="status" required>
-        <option value="lost">Zaginione</option>
-        <option value="found">Znalezione</option>
-      </select>
+      <fieldset>
+        <legend>Status</legend>
+        <select ref={statusRef} id="status" required>
+          <option value="lost">Zaginione</option>
+          <option value="found">Znalezione</option>
+        </select>
+      </fieldset>
 
-      <FormGroupInput
-        id="eventLocation"
-        ref={eventLocationRef}
-        labelText="Miejsce zdarzenia"
-        placeholder="np. Park Centralny"
-        defaultValue="Park Centralny"
-        required
-      />
+      <fieldset>
+        <legend>Lokalizacja</legend>
+        <FormGroupInput
+          id="eventLocation"
+          ref={eventLocationRef}
+          labelText=""
+          placeholder="Miejsce zgubienia"
+          defaultValue="Park Centralny"
+          required
+        />
 
-      <FormGroupInput
-        id="storageLocation"
-        ref={storageLocationRef}
-        labelText="Miejsce przechowania"
-        placeholder="np. Posterunek policji"
-        defaultValue="Posterunek policji"
-        required
-      />
+        <FormGroupInput
+          id="storageLocation"
+          ref={storageLocationRef}
+          labelText=""
+          placeholder="Miejsce przechowania"
+          defaultValue="Posterunek policji"
+          required
+        />
 
-      <FormGroupInput
-        id="city"
-        ref={cityRef}
-        labelText="Miasto / Miejscowość"
-        placeholder="np. Warszawa"
-        defaultValue="Warszawa"
-        required
-      />
+        <FormGroupInput
+          id="city"
+          ref={cityRef}
+          labelText=""
+          placeholder="Miasto / Miejscowość"
+          defaultValue="Warszawa"
+          required
+        />
 
-      <FormGroupInput
-        id="country"
-        ref={countryRef}
-        labelText="Kraj"
-        placeholder="np. Polska"
-        defaultValue="Polska"
-        required
-      />
+        <FormGroupInput id="country" ref={countryRef} labelText="" placeholder="Kraj" defaultValue="Polska" required />
+      </fieldset>
 
-      <FormGroupInput
-        id="fromDate"
-        ref={fromDateRef}
-        labelText="Data od"
-        type="date"
-        defaultValue={new Date("2023-12-06").toISOString().split("T")[0]}
-        required
-      />
+      <fieldset className="date-field">
+        <legend>Zakres dat</legend>
 
-      <FormGroupInput
-        id="toDate"
-        ref={toDateRef}
-        labelText="Data do"
-        type="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
-        required
-      />
+        <div className="fieldset-content">
+          <FormGroupInput
+            id="fromDate"
+            ref={fromDateRef}
+            labelText="Data od:"
+            type="date"
+            defaultValue={new Date("2023-12-06").toISOString().split("T")[0]}
+          />
+          <FormGroupInput
+            id="toDate"
+            ref={toDateRef}
+            labelText="Data do:"
+            type="date"
+            defaultValue={new Date().toISOString().split("T")[0]}
+          />
+        </div>
+      </fieldset>
 
-      <button type="submit">Wyślij</button>
+      <button className="submit" type="submit">
+        Wyślij
+      </button>
     </form>
   );
 };
