@@ -77,7 +77,7 @@ Jest responsywne, ale wymaga poprawek UX.
 
 ### 6. Sposób testowania i/lub walidacji
 
-Uruchomienie prototypu mechanizmu i weryfikacja wymogów technicznych i funkcjonalnych
+Uruchomienie prototypu mechanizmu i weryfikacja wymogów technicznych i funkcjonalnych.
 
 ### 7. Dostępne zasoby 
 - Otwarty kod portalu dane.gov.pl https://dane.gov.pl/source-code/ 

@@ -1,0 +1,320 @@
+---
+openapi: 3.0.4
+info:
+  title: LostAndFound.API
+  version: '1.0'
+paths:
+  "/api/v1/test":
+    get:
+      tags:
+      - LostAndFound.API
+      operationId: Test
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/String<>f__AnonymousType0"
+  "/api/v1/items":
+    get:
+      tags:
+      - LostAndFound.API
+      parameters:
+      - name: take
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: skip
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: search
+        in: query
+        schema:
+          type: string
+          default: ''
+      - name: foundDateFrom
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: foundDateTo
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: country
+        in: query
+        schema:
+          type: string
+          default: ''
+      - name: location
+        in: query
+        schema:
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemsResponse"
+    post:
+      tags:
+      - LostAndFound.API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateItemRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CreateItemResponse"
+  "/api/v1/items/{id}":
+    get:
+      tags:
+      - LostAndFound.API
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemDetailsResponse"
+  "/api/v1/items/{itemId}/details":
+    post:
+      tags:
+      - LostAndFound.API
+      parameters:
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/CreateItemDetailsRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+  "/api/v1/export/json":
+    get:
+      tags:
+      - LostAndFound.API
+      responses:
+        '200':
+          description: OK
+  "/api/v1/export/xml":
+    get:
+      tags:
+      - LostAndFound.API
+      responses:
+        '200':
+          description: OK
+  "/api/v1/export/csv":
+    get:
+      tags:
+      - LostAndFound.API
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    CreateItemDetailsRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+        value:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateItemRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        eventLocation:
+          type: string
+          nullable: true
+        storageLocation:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        lostDateFrom:
+          type: string
+          format: date-time
+          nullable: true
+        lostDateTo:
+          type: string
+          format: date-time
+          nullable: true
+        country:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ItemDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        lostDateFrom:
+          type: string
+          format: date-time
+          nullable: true
+        lostDateTo:
+          type: string
+          format: date-time
+          nullable: true
+        foundDate:
+          type: string
+          format: date-time
+          nullable: true
+        eventLocation:
+          type: string
+          nullable: true
+        storageLocation:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdBy:
+          type: string
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedBy:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemDetailsResponseDetail"
+          nullable: true
+      additionalProperties: false
+    ItemDetailsResponseDetail:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+        value:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemsResponseItem"
+          nullable: true
+      additionalProperties: false
+    ItemsResponseItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        eventLocation:
+          type: string
+          nullable: true
+        storageLocation:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        lostDateFrom:
+          type: string
+          format: date-time
+          nullable: true
+        lostDateTo:
+          type: string
+          format: date-time
+          nullable: true
+        foundDate:
+          type: string
+          format: date-time
+          nullable: true
+        country:
+          type: string
+          nullable: true
+      additionalProperties: false
+    String<>f__AnonymousType0:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+tags:
+- name: LostAndFound.API
