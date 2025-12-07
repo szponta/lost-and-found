@@ -92,9 +92,9 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
       <FormGroupInput
         id="name"
         ref={nameRef}
-        labelText="Nazwa zgubionego przedmiotu"
-        placeholder="np. Telefon komórkowy"
-        defaultValue="Telefon"
+        labelText=""
+        placeholder="Nazwa zgubionego przedmiotu"
+        defaultValue="Telefon Samsung"
         required
       />
 
