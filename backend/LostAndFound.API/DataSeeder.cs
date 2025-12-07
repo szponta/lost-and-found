@@ -1,3 +1,4 @@
+using LostAndFound.Data.Olsztyn;
 using LostAndFound.Data.Plock;
 using LostAndFound.Services;
 
@@ -19,15 +20,18 @@ public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
             return;
         }
 
-        var dataSource = new DataSource();
+        var dataSource = new DataSourcePlock();
 
         await foreach (var item in dataSource.GetItems())
         {
             var foundDate = GetFoundDateFrom(item);
 
+            var name = item.Title?.Replace("BRZ - ", "").Trim() ?? "";
+
             var itemData = new Item
             {
-                Name = item.Title ?? "",
+                Name = name,
+                Status = ItemStatus.Found,
                 Description = item.Content ?? "Do odbioru w Biurze Rzeczy Znalezionych miasta Płock.",
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = item.UpdatedAt,
@@ -44,6 +48,25 @@ public class DataSeeder(LostAndFoundDbContext context) : IDataSeeder
                         Key = x.NodeName ?? "",
                         Value = x.NodeValue ?? ""
                     }).ToList()
+            };
+
+            await context.Items.AddAsync(itemData);
+        }
+
+        var dataSource2 = new DataSourceOlsztyn();
+
+        await foreach (var item in dataSource2.GetItems())
+        {
+            var itemData = new Item
+            {
+                Name = item.Name ?? "",
+                Status = ItemStatus.Found,
+                CreatedAt = item.ReceivedAt,
+                UpdatedAt = item.ReceivedAt,
+                FoundDate = item.ReceivedAt,
+                City = "Olsztyn",
+                Country = "Polska",
+                StorageLocation = "Biuro Rzeczy Znalezionych, Olsztyn"
             };
 
             await context.Items.AddAsync(itemData);

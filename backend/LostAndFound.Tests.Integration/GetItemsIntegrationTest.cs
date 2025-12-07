@@ -118,4 +118,25 @@ public class GetItemsIntegrationTest : IClassFixture<WebApplicationFactory<Progr
         response.Items.Should().HaveCount(1);
         response.Items[0].Name.Should().Be("Item 2");
     }
+
+    [Fact]
+    public async Task GetItems_GivenLocation_ShouldRespond()
+    {
+        // Arrange
+        new DbBuilder(_context)
+            .AddItem()
+            .WithName("Telefon")
+            .WithFoundDate(new DateTime(2024, 01, 01))
+            .WithCountry("Polska")
+            .WithCity("Warszawa")
+            .Build();
+
+        // Act
+        var response =
+            await _client.GetAsync(
+                "/api/v1/items/?search=Telefon&foundDateFrom=2023-12-06&foundDateTo=2025-12-06&country=polska&location=Warszawa");
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+    }
 }

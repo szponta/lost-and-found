@@ -21,8 +21,17 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
     private readonly IMapper _mapper =
         new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<Item, ItemsResponseItem>();
-            cfg.CreateMap<PagedResults<Item>, ItemsResponse>();
+            cfg.CreateMap<Item, ItemsResponseItem>()
+                .ForMember(dest => dest.LostDateFrom,
+                    opt => opt.MapFrom(src => src.LostDateFrom.GetValueOrDefault().DateTime))
+                .ForMember(dest => dest.LostDateTo,
+                    opt => opt.MapFrom(src => src.LostDateTo.GetValueOrDefault().DateTime))
+                .ForMember(dest => dest.FoundDate,
+                    opt => opt.MapFrom(src => src.FoundDate.GetValueOrDefault().DateTime))
+                ;
+
+            cfg.CreateMap<PagedResults<Item>, ItemsResponse>()
+                ;
         }).CreateMapper();
 
     public async Task<ItemsResponse> HandleAsync(int take = 10, int skip = 0, string search = "",
@@ -35,9 +44,10 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
         var dbSet = context.Set<Item>()
             .Select(item => new SearchItem
             {
-                Item = item, Search = $"{item.Name} {item.Description}".ToLowerInvariant(),
+                Item = item,
+                Search = $"{item.Name} {item.Description}".ToLowerInvariant(),
                 Country = item.Country.ToLowerInvariant(),
-                Location = item.EventLocation != null ? item.EventLocation.ToLowerInvariant() : "",
+                Location = $"{item.EventLocation} {item.City}".ToLowerInvariant(),
                 DetailSearch = context.Set<ItemDetail>()
                     .Where(d => d.ItemId == item.Id)
                     .Select(d => d.Value.ToLowerInvariant())
@@ -49,6 +59,23 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
             country = country.ToLowerInvariant();
             dbSet = dbSet.Where(x => x.Country == country);
         }
+
+        if (!string.IsNullOrWhiteSpace(location))
+        {
+            location = location.ToLowerInvariant();
+            dbSet = dbSet.Where(x => x.Location.Contains(location));
+        }
+
+        if (foundDateFrom != null)
+        {
+            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
+        }
+
+        if (foundDateTo != null)
+        {
+            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
+        }
+
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -87,22 +114,6 @@ public partial class GetItemsHandler(LostAndFoundDbContext context) : IGetItemsH
                     (word5 != "" && y.Contains(word5))
                 )
             }).OrderByDescending(x => x.Value);
-        }
-
-        if (foundDateFrom != null)
-        {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate >= foundDateFrom);
-        }
-
-        if (foundDateTo != null)
-        {
-            dbSet = dbSet.Where(x => x.Item.FoundDate != null && x.Item.FoundDate <= foundDateTo);
-        }
-
-        if (!string.IsNullOrWhiteSpace(location))
-        {
-            location = location.ToLowerInvariant();
-            dbSet = dbSet.Where(x => x.Location.Contains(location));
         }
 
         var totalEntities = dbSet.Count();

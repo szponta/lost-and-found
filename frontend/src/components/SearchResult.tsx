@@ -1,4 +1,4 @@
-import type { SearchResultItem } from "../types/form.types";
+import type { SearchResultItem } from "../types/search.types";
 
 interface Props {
   items: SearchResultItem[];

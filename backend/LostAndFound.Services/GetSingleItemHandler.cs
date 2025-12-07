@@ -13,7 +13,12 @@ public class GetSingleItemHandler(LostAndFoundDbContext context) : IGetSingleIte
 {
     private readonly IMapper _mapper = new MapperConfiguration(cfg =>
     {
-        cfg.CreateMap<Item, ItemDetailsResponse>();
+        cfg.CreateMap<Item, ItemDetailsResponse>()
+            .ForMember(dest => dest.LostDateFrom,
+                opt => opt.MapFrom(src => src.LostDateFrom.GetValueOrDefault().DateTime))
+            .ForMember(dest => dest.LostDateTo, opt => opt.MapFrom(src => src.LostDateTo.GetValueOrDefault().DateTime))
+            .ForMember(dest => dest.FoundDate, opt => opt.MapFrom(src => src.FoundDate.GetValueOrDefault().DateTime))
+            ;
         cfg.CreateMap<ItemDetail, ItemDetailsResponseDetail>();
     }).CreateMapper();
 
