@@ -2,7 +2,7 @@ import type { AddFormData } from "../types/add.types.ts";
 
 export const submitAddRequest = async (data: AddFormData) => {
   try {
-    const response = await fetch("/api/items", {
+    const response = await fetch("/api/v1/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

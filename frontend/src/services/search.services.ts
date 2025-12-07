@@ -18,7 +18,7 @@ export const submitSearchRequest = async (
     location: searchFormData.location,
   });
 
-  const URL: string = `/api/items/?${params.toString()}`;
+  const URL: string = `/api/v1/items/?${params.toString()}`;
 
   try {
     const response = await fetch(URL, {
