@@ -91,47 +91,65 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
       <FormGroupInput
         id="name"
         ref={nameRef}
-        labelText="Nazwa zgubionego przedmiotu"
-        placeholder="np. Telefon komórkowy"
-        defaultValue="Telefon"
+        labelText=""
+        placeholder="Nazwa zgubionego przedmiotu"
+        defaultValue="Telefon Samsung"
         required
       />
+      <button type="submit">Szukaj</button>
 
-      <select ref={countryRef} id="country" required>
-        <option value="polska">Polska</option>
-        <option value="niemcy">Niemcy</option>
-        <option value="czechy">Czechy</option>
-      </select>
+      <hr />
 
-      <FormGroupInput
-        id="location"
-        ref={locationRef}
-        labelText="Miejscie gdzie przedmiot został zgubiony"
-        placeholder="np. Warszawa"
-        defaultValue="Warszawa"
-      />
-      <span>Maksymalnie tydzień</span>
-      <FormGroupInput
-        id="fromDate"
-        ref={fromDateRef}
-        labelText="Data od"
-        type="date"
-        defaultValue={new Date("2023-12-06").toISOString().split("T")[0]}
-      />
-      <FormGroupInput
-        id="toDate"
-        ref={toDateRef}
-        labelText="Data do"
-        type="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
-      />
+      <div className="filters">
+        <h2 className="filter-header">Filtry</h2>
+        <fieldset className="location-field">
+          <legend>Podaj lokalizację</legend>
+          <div className="fieldset-content">
+            <FormGroupInput
+              id="location"
+              ref={locationRef}
+              labelText=""
+              placeholder="np. Warszawa"
+              defaultValue="Warszawa"
+            />
+            <select ref={countryRef} id="country" required>
+              <option value="polska">Polska</option>
+              <option value="niemcy">Niemcy</option>
+              <option value="czechy">Czechy</option>
+            </select>
+          </div>
+        </fieldset>
 
-      <select ref={statusRef} id="status" required>
-        <option value="lost">Zaginione</option>
-        <option value="found">Znalezione</option>
-      </select>
+        <hr />
 
-      <button type="submit">Wyślij</button>
+        <fieldset className="date-field">
+          <legend>Zakres dat</legend>
+
+          <div className="fieldset-content">
+            <FormGroupInput
+              id="fromDate"
+              ref={fromDateRef}
+              labelText="Data od:"
+              type="date"
+              defaultValue={new Date("2023-12-06").toISOString().split("T")[0]}
+            />
+            <FormGroupInput
+              id="toDate"
+              ref={toDateRef}
+              labelText="Data do:"
+              type="date"
+              defaultValue={new Date().toISOString().split("T")[0]}
+            />
+          </div>
+        </fieldset>
+
+        <hr />
+
+        <select ref={statusRef} id="status" required>
+          <option value="found">Znalezione</option>
+          <option value="lost">Zaginione</option>
+        </select>
+      </div>
     </form>
   );
 };

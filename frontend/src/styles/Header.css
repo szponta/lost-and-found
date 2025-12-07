@@ -52,6 +52,9 @@ div#ue {
   margin-left: auto;
   padding: 0.5rem 1rem;
   background-color: #0052a5;
+  &:hover {
+    background-color: #0753a4;
+  }
   svg {
     vertical-align: middle;
     margin-right: 8px;
