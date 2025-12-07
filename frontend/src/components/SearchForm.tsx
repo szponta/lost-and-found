@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import type { FormData, ItemStatusType, SearchResultItem } from "../types/form.types.ts";
+import type { FormData, ItemStatusType, SearchResultItem } from "../types/search.types.ts";
 import { submitSearchRequest } from "../services/search.services.ts";
 import FormGroupInput from "../components/FormGroupInput";
+import "src/styles/SearchForm.css";
 
 interface Props {
   setSearchResult: React.Dispatch<React.SetStateAction<SearchResultItem[]>>;
@@ -107,10 +108,10 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         id="location"
         ref={locationRef}
         labelText="Miejscie gdzie przedmiot został zgubiony"
-        placeholder="np. Warszawa"
-        defaultValue="Warszawa"
+        placeholder="np. Płock"
+        defaultValue="Płock"
       />
-      <span>Maksymalnie tydzień</span>
+
       <FormGroupInput
         id="fromDate"
         ref={fromDateRef}

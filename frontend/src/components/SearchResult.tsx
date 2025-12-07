@@ -1,4 +1,4 @@
-import type { SearchResultItem } from "../types/form.types";
+import type { SearchResultItem } from "../types/search.types";
 
 interface Props {
   items: SearchResultItem[];
@@ -15,12 +15,13 @@ const SearchResult = ({ items, setItemsPerPage, setCurrentPage, currentPage, isN
         {items.map((item) => {
           return (
             <div key={item.id} style={{ border: "5px solid #000" }}>
-              <p>{item.name}</p>
-              <p>{item.description}</p>
+              <a href={`http://localhost:8080/items/${item.id}`}>{item.title}</a>
               <p>{item.status}</p>
               <p>{item.eventLocation}</p>
               <p>{item.storageLocation}</p>
               <p>{item.city}</p>
+              <p>{item.lostDateFrom}</p>
+              <p>{item.lostDateTo}</p>
             </div>
           );
         })}

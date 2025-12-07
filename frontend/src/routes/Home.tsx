@@ -5,7 +5,7 @@ import "src/styles/Header.css";
 import "src/styles/Navbar.css";
 
 import SearchForm from "../components/SearchForm.tsx";
-import type { SearchResultItem } from "../types/form.types.ts";
+import type { SearchResultItem } from "../types/search.types.ts";
 import SearchResult from "../components/SearchResult.tsx";
 
 const Home = () => {
