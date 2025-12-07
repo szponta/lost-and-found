@@ -1,0 +1,102 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #eee;
+  padding: 1rem;
+}
+
+div.form-group:has(input#name) {
+  input {
+    width: 100%;
+    margin: 0;
+    &:focus {
+      outline: 3px solid #50a6ff;
+    }
+  }
+}
+
+button {
+  margin: 1rem auto;
+  width: 100%;
+}
+
+h2.filter-header {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.location-field,
+.date-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.date-field {
+  justify-content: space-evenly;
+}
+
+input,
+select {
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  &:focus {
+    outline: 2px solid #50a6ff;
+  }
+}
+
+select#country {
+  margin-left: 0;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: #0865c9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #0753a4;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  legend {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.fieldset-content {
+  display: contents;
+  height: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #fff;
+  margin: 1rem 0;
+}
+
+.location-field {
+  flex-direction: column;
+  .form-group {
+    width: 100%;
+    padding: 0;
+  }
+  input,
+  select {
+    width: 100%;
+  }
+}
