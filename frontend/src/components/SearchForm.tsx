@@ -107,8 +107,8 @@ const SearchForm = ({ setSearchResult, itemsPerPage, currentPage, setCurrentPage
         id="location"
         ref={locationRef}
         labelText="Miejscie gdzie przedmiot został zgubiony"
-        placeholder="np. Warszawa"
-        defaultValue="Warszawa"
+        placeholder="np. Płock"
+        defaultValue="Płock"
       />
 
       <FormGroupInput

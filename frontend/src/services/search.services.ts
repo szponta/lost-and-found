@@ -15,7 +15,7 @@ export const submitSearchRequest = async (
     foundDateFrom: modifyDate(searchFormData.fromDate),
     foundDateTo: modifyDate(searchFormData.toDate),
     country: searchFormData.country,
-    // location: searchFormData.location, // 500
+    location: searchFormData.location,
   });
 
   const URL: string = `/api/v1/items/?${params.toString()}`;
